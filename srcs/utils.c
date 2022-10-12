@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/07/28 17:37:36 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:52:46 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,14 @@ int	is_digit(char *stack)
 			|| ft_atoi(stack) < -2147483648))
 		return (0);
 	return (1);
+}
+
+int		time_in_mill(void)
+{
+	struct timeval  tv;
+	int mill;
+	
+	gettimeofday(&tv, NULL);
+    mill = tv.tv_sec * 1000 + (tv.tv_usec) / 1000;
+	return (mill);
 }

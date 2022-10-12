@@ -23,7 +23,7 @@ OBJSMAIN = ${MAIN:.c=.o}
 
 INC = ./includes
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -pthread
 
 .c.o:
 	${CC} ${FLAGS} -I${INC} -c $< -o ${<:.c=.o}
