@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/12 15:22:20 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:37:57 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,10 @@ t_arg	set_params(char **av)
 	else
 		p_arg.nb_eat = -1;
 	p_arg.start_time = time_in_mill();
+	p_arg.philo = malloc(sizeof(t_philo) * p_arg.nb_philo);
+	if (!p_arg.philo)
+		ft_error("Allocation Problem\n");
 	return (p_arg);
-}
-
-int	check_arg(char **av)
-{
-	int	i;
-
-	i = 0;
-	while (av[++i])
-	{
-		if (is_digit(av[i]) == 0)
-		{
-			printf("Error : please input valid arguments\n");
-			return (0);
-		}
-		if (ft_atoi(av[i]) < 0)
-		{
-			printf("Error : please only input positive arguments\n");
-			return (0);
-		}
-	}
-	return (1);
 }
 
 void	print_params(t_arg philo)
@@ -61,17 +43,14 @@ void	print_params(t_arg philo)
 int	main(int ac, char **av)
 {
 	t_arg	philo;
-	int		timestamp;
 
 	if (ac != 5 && ac != 6)
-	{
-		printf("Error : invalid number of arguments\n");
+		return (printf("Error : invalid number of arguments\n"));
+	if (check_arg(av) == 0)
 		return (1);
-	}
-	if (check_arg(av) == 1)
-		philo = set_params(av);
-	else
-		return (1);
+	philo = set_params(av);
 	print_params(philo);
+	if (create_threads(&philo) == 1)
+		return (printf("Problem with creating threads\n"));
 	return (0);
 }

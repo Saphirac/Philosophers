@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/12 14:52:46 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:36:46 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,39 @@ int	is_digit(char *stack)
 	return (1);
 }
 
-int		time_in_mill(void)
+int	time_in_mill(void)
 {
-	struct timeval  tv;
-	int mill;
-	
+	struct timeval	tv;
+	int				mill;
+
 	gettimeofday(&tv, NULL);
-    mill = tv.tv_sec * 1000 + (tv.tv_usec) / 1000;
+	mill = tv.tv_sec * 1000 + (tv.tv_usec) / 1000;
 	return (mill);
+}
+
+void	ft_error(char *str)
+{
+	printf("%s\n", str);
+	exit(EXIT_FAILURE);
+}
+
+int	check_arg(char **av)
+{
+	int	i;
+
+	i = 0;
+	while (av[++i])
+	{
+		if (is_digit(av[i]) == 0)
+		{
+			printf("Error : please input valid arguments\n");
+			return (0);
+		}
+		if (ft_atoi(av[i]) < 0)
+		{
+			printf("Error : please only input positive arguments\n");
+			return (0);
+		}
+	}
+	return (1);
 }
