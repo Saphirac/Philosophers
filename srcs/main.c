@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/13 17:37:57 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:56:13 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int	main(int ac, char **av)
 	print_params(philo);
 	if (create_threads(&philo) == 1)
 		return (printf("Problem with creating threads\n"));
+	free(philo.philo);
 	return (0);
 }

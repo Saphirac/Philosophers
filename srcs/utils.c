@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/13 17:36:46 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:47:21 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,12 @@ int	check_arg(char **av)
 		}
 	}
 	return (1);
+}
+
+int	timestamp(t_arg *p_arg)
+{
+	int timestamp;
+
+	timestamp = time_in_mill() - p_arg.start_time;
+	return (timestamp);
 }

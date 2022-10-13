@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 17:37:21 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/13 17:43:44 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:51:26 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,21 @@ int	create_threads(t_arg *p_arg)
 		if (pthread_create(&(p_arg->philo[i].th_philo), NULL, routine, &i) != 0)
 			return (1);
 		if (pthread_join(p_arg->philo[i].th_philo, NULL) != 0)
-			return (2);
+			return (1);
 		p_arg->philo[i].n_philo = i;
 	}
 	return (0);
 }
 
-int	create_mutex(t_arg philo)
+int	create_mutex(t_arg *p_arg)
 {
-	
+	int	i;
+
+	i = -1;
+	while (++i < p_arg->nb_philo)
+	{
+		if(pthread_mutex_init(&(p_arg->philo[i].fork), NULL) != 0)
+			return (free(p_arg->philo),1);
+	}
+	return (0);
 }
