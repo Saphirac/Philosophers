@@ -16,7 +16,8 @@ CC = gcc
 
 MAIN = ./srcs/main.c 
 
-SRCS = ./srcs/utils.c ./srcs/init.c 
+SRCS = ./srcs/utils.c ./srcs/init.c \
+		./srcs/actions.c ./srcs/utils_2.c 
 
 OBJS = ${SRCS:.c=.o}
 OBJSMAIN = ${MAIN:.c=.o}

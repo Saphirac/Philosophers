@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/13 21:56:13 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/13 18:01:58 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,10 @@ t_arg	set_params(char **av)
 		p_arg.nb_eat = -1;
 	p_arg.start_time = time_in_mill();
 	p_arg.philo = malloc(sizeof(t_philo) * p_arg.nb_philo);
+	p_arg.philo_id = 0;
 	if (!p_arg.philo)
 		ft_error("Allocation Problem\n");
 	return (p_arg);
-}
-
-void	print_params(t_arg philo)
-{
-	printf("number of philo : %d\n", philo.nb_philo);
-	printf("time to die : %d\n", philo.time_die);
-	printf("time to eat : %d\n", philo.time_eat);
-	printf("time to sleep : %d\n", philo.time_sleep);
-	printf("number of eat : %d\n", philo.nb_eat);
 }
 
 int	main(int ac, char **av)
@@ -49,7 +41,6 @@ int	main(int ac, char **av)
 	if (check_arg(av) == 0)
 		return (1);
 	philo = set_params(av);
-	print_params(philo);
 	if (create_threads(&philo) == 1)
 		return (printf("Problem with creating threads\n"));
 	free(philo.philo);

@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/10/13 22:47:21 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/09 17:50:19 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ int	timestamp(t_arg *p_arg)
 {
 	int timestamp;
 
-	timestamp = time_in_mill() - p_arg.start_time;
+	timestamp = time_in_mill() - p_arg->start_time;
 	return (timestamp);
 }
