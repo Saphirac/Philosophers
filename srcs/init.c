@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 17:37:21 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/17 02:43:19 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/17 20:14:45 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ void	*routine(void *v_arg)
 {
 	t_arg	*p_arg;
 	int		p_id;
+	int 	i;
 
 	p_arg = (t_arg *)v_arg;
 	p_id = p_arg->philo_id;
 	p_arg->philo[p_id - 1].last_meal = 0;
-	while (1)
+	i = 0;
+	while (i == 0 || i == 1)
 	{
-		if (get_fork(p_arg, p_id) == 1)
-			philo_think(p_arg, p_id);
-		else
-			philo_sleep(p_arg, p_id);
-		printf("last_meal %d : %d\n", p_id, p_arg->philo[p_id - 1].last_meal);
-		check_death(p_arg);
+		i = get_fork(p_arg, p_id);
+		philo_think(p_arg, p_id);
+		i = philo_sleep(p_arg, p_id);
+		i = check_death(p_arg);
 	}
 	return (NULL);
 }
