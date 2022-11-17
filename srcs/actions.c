@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:51:54 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/13 18:09:51 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/17 02:34:11 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,25 @@ void	philo_think(t_arg *p_arg, int philo_id)
 	printf("[%d] Philosophers %d is thinking.\n", timestamp(p_arg), philo_id);
 }
 
-int	philo_eat(t_arg *p_arg, int philo_id)
+int	philo_eat(t_arg *p_arg, int p_id)
 {
-	printf("[%d] Philosophers %d is eating.\n", timestamp(p_arg), philo_id);
-	p_arg->philo[philo_id].last_meal = timestamp(p_arg);
+	printf("[%d] Philosophers %d is eating.\n", timestamp(p_arg), p_id);
+	p_arg->philo[p_id - 1].last_meal = timestamp(p_arg);
 	check_death(p_arg);
 	usleep(p_arg->time_eat * 1000);
 	check_death(p_arg);
-	if (philo_id == 0)
+	if (p_id == 1)
 	{
-		if (pthread_mutex_unlock(&p_arg->philo[philo_id].fork) != 0)
+		if (pthread_mutex_unlock(&p_arg->philo[p_id - 1].fork) != 0)
 			return (1);
 		if (pthread_mutex_unlock(&p_arg->philo[p_arg->nb_philo - 1].fork) != 0)
 			return (1);
 	}
 	else
 	{
-		if (pthread_mutex_unlock(&p_arg->philo[philo_id - 1].fork) != 0)
+		if (pthread_mutex_unlock(&p_arg->philo[p_id - 2].fork) != 0)
 			return (1);
-		if (pthread_mutex_unlock(&p_arg->philo[philo_id].fork) != 0)
+		if (pthread_mutex_unlock(&p_arg->philo[p_id - 1].fork) != 0)
 			return (1);
 	}
 	return (0);
@@ -49,25 +49,25 @@ int	philo_eat(t_arg *p_arg, int philo_id)
 
 int	get_fork(t_arg *p_arg, int p_id)
 {
-	if (p_id == 0)
+	if (p_id == 1)
 	{
-		if (pthread_mutex_lock(&p_arg->philo[p_id].fork) != 0)
+		if (pthread_mutex_lock(&p_arg->philo[p_id - 1].fork) != 0)
 			return (1);
 		printf("[%d] Philo %d has taken a fork.\n", timestamp(p_arg), p_id);
 		if (pthread_mutex_lock(&p_arg->philo[(p_arg->nb_philo) - 1].fork) != 0)
 		{
-			pthread_mutex_unlock(&p_arg->philo[p_id].fork);
+			pthread_mutex_unlock(&p_arg->philo[p_id - 1].fork);
 			return (1);
 		}
 	}
 	else
 	{
-		if (pthread_mutex_lock(&p_arg->philo[p_id - 1].fork) != 0)
+		if (pthread_mutex_lock(&p_arg->philo[p_id - 2].fork) != 0)
 			return (1);
 		printf("[%d] Philo %d has taken a fork.\n", timestamp(p_arg), p_id);
-		if (pthread_mutex_lock(&p_arg->philo[p_id].fork) != 0)
+		if (pthread_mutex_lock(&p_arg->philo[p_id - 1].fork) != 0)
 		{
-			pthread_mutex_unlock(&p_arg->philo[p_id - 1].fork);
+			pthread_mutex_unlock(&p_arg->philo[p_id - 2].fork);
 			return (1);
 		}
 	}
