@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/17 02:38:34 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/23 00:04:03 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_arg	set_params(char **av)
 {
 	t_arg	p_arg;
-	int i = -1;
+	int i;
 
 	p_arg.nb_philo = ft_atoi(av[1]);
 	p_arg.time_die = ft_atoi(av[2]);
@@ -27,12 +27,14 @@ t_arg	set_params(char **av)
 		p_arg.nb_eat = -1;
 	p_arg.start_time = time_in_mill();
 	p_arg.philo = malloc(sizeof(t_philo) * p_arg.nb_philo);
-	while (++i < p_arg.nb_philo)
-		p_arg.philo[i].last_meal = 0;
-	p_arg.philo_id = 0;
-	p_arg.test = 0;
 	if (!p_arg.philo)
 		ft_error("Allocation Problem\n");
+	i = -1;
+	while (++i < p_arg.nb_philo)
+	{
+		p_arg.philo[i].id = i + 1;
+		p_arg.philo[i].p_arg = &p_arg;
+	}
 	return (p_arg);
 }
 

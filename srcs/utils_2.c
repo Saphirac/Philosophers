@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 19:25:43 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/17 20:00:15 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/22 23:08:01 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int check_death(t_arg *p_arg)
 	{
 		if ((timestamp(p_arg) - p_arg->philo[i].last_meal) > p_arg->time_die)
 		{
-			p_arg->philo[i].status = DEAD;
 			printf("[%d] Philosopher %d died\n", timestamp(p_arg), (i + 1));
 			return (2);
 		}
