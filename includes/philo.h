@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/24 03:09:05 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/24 07:08:29 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ typedef struct s_philo
 	pthread_mutex_t	*l_fork;
 	int				last_meal;
 	int				id;
-	t_arg			*p_arg;
 	int				time_sleep;
 	int				time_eat;
+	int				nb_eat;
+	t_arg			*p_arg;
 }		t_philo;
 
 long	ft_atoi(char *nptr);

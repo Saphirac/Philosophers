@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/24 04:09:07 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/24 07:08:19 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_arg	set_params(char **av)
 		p_arg.philo[i].time_sleep = ft_atoi(av[4]);
 		p_arg.philo[i].last_meal = 0;
 		p_arg.philo[i].p_arg = &p_arg;
+		p_arg.philo[i].nb_eat = 0;
 	}
 	return (p_arg);
 }
