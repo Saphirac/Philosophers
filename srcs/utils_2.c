@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 19:25:43 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/24 07:18:00 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 18:59:01 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int	check_eat(t_arg *p_arg)
 	i = 0;
 	while (i < p_arg->nb_philo)
 	{
+		pthread_mutex_lock(&p_arg->meal);
 		if (p_arg->philo[i].nb_eat < p_arg->nb_eat)
 			return (0);
+		pthread_mutex_unlock(&p_arg->meal);
 		i++;
 	}
 	pthread_mutex_lock(&p_arg->m_death);
@@ -44,34 +46,10 @@ int	check_eat(t_arg *p_arg)
 	return (1);
 }
 
-void	*check_death(void *v_arg)
+int ft_return(char *str, int ret)
 {
-	t_arg	*p_arg;
-	int		i;
-
-	p_arg = (t_arg *)v_arg;
-	while (p_arg->death == ALIVE)
-	{
-		i = 0;
-		while (i < p_arg->nb_philo)
-		{
-			if ((timestamp(p_arg) - p_arg->philo[i].last_meal)
-				> p_arg->time_die)
-			{
-				m_printf("died", p_arg, (i + 1));
-				pthread_mutex_lock(&p_arg->m_death);
-				p_arg->death = DEAD;
-				pthread_mutex_unlock(&p_arg->m_death);
-				destroy_mutex(p_arg);
-				return (NULL);
-			}
-			i++;
-		}
-		if (p_arg->nb_eat != -1)
-			if (check_eat(p_arg) == 1)
-				return (NULL);
-	}
-	return (NULL);
+	printf("%s\n", str);
+	return (ret);
 }
 
 int	timestamp(t_arg *p_arg)

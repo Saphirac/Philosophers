@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/24 01:19:47 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 18:42:21 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@ int	time_in_mill(void)
 	return (mill);
 }
 
-void	ft_error(char *str)
+int	ft_check_death(t_arg *p_arg)
 {
-	printf("%s\n", str);
-	exit(EXIT_FAILURE);
+	pthread_mutex_lock(&p_arg->m_death);
+	if (p_arg->death == DEAD)
+		return (1);
+	pthread_mutex_unlock(&p_arg->m_death);
+	return (0);
 }
 
 int	check_arg(char **av)

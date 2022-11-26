@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/24 07:08:29 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 19:01:12 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_arg
 	pthread_mutex_t	m_death;
 	int				death;
 	pthread_mutex_t	write;
+	pthread_mutex_t	meal;
 	t_philo			*philo;
 	pthread_t		monitor;
 }		t_arg;
@@ -54,7 +55,7 @@ typedef struct s_philo
 long	ft_atoi(char *nptr);
 int		is_digit(char *stack);
 int		time_in_mill(void);
-void	ft_error(char *str);
+int		ft_return(char *str, int ret);
 int		check_arg(char **av);
 int		create_threads(t_arg *p_arg);
 int		create_mutex(t_arg *p_arg);
@@ -66,5 +67,9 @@ int		timestamp(t_arg *p_arg);
 void	*routine(void *philo);
 int		philo_eat(t_philo *philo);
 void	m_printf(const char *s, t_arg *p_arg, int id);
+int		ft_check_death(t_arg *p_arg);
+int		check_eat(t_arg *p_arg);
+void	destroy_mutex(t_arg *p_arg);
+
 
 #endif
