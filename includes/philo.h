@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 08:05:55 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/28 20:57:55 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define ALIVE 0
 # define DEAD 1
+# define LOCKED 1
+# define UNLOCKED 0
 
 typedef struct s_philo	t_philo;
 
@@ -35,6 +37,7 @@ typedef struct s_arg
 	int				death;
 	pthread_mutex_t	write;
 	pthread_mutex_t	meal;
+	//pthread_mutex_t	check_nb;
 	t_philo			*philo;
 	pthread_t		monitor;
 }		t_arg;
@@ -44,6 +47,8 @@ typedef struct s_philo
 	pthread_t		th_philo;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	*l_fork;
+	int				first_lock;
+	int				second_lock;
 	int				last_meal;
 	int				id;
 	int				time_sleep;
@@ -66,7 +71,7 @@ void	*check_death(void *p_arg);
 int		timestamp(t_arg *p_arg);
 void	*routine(void *philo);
 int		philo_eat(t_philo *philo);
-void	m_printf(const char *s, t_arg *p_arg, int id);
+void	m_printf(char *s, t_arg *p_arg, int id);
 int		ft_check_death(t_arg *p_arg);
 int		check_eat(t_arg *p_arg);
 void	destroy_mutex(t_arg *p_arg);

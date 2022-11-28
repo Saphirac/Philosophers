@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 19:25:43 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 08:14:30 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:04:22 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void	destroy_mutex(t_arg *p_arg)
 	i = 0;
 	while (i < p_arg->nb_philo)
 	{
+		if (p_arg->philo[i].first_lock == LOCKED)
+			pthread_mutex_unlock(&p_arg->philo[i].r_fork);
+		if (p_arg->philo[i].second_lock == LOCKED)
+			pthread_mutex_unlock(p_arg->philo[i].l_fork);
 		pthread_mutex_destroy(&p_arg->philo[i].r_fork);
 		i++;
 	}
@@ -33,10 +37,10 @@ int	check_eat(t_arg *p_arg)
 	i = 0;
 	while (i < p_arg->nb_philo)
 	{
-		//pthread_mutex_lock(&p_arg->meal);
+		pthread_mutex_lock(&p_arg->meal);
 		if (p_arg->philo[i].nb_eat < p_arg->nb_eat)
 			return (0);
-		//pthread_mutex_unlock(&p_arg->meal);
+		pthread_mutex_unlock(&p_arg->meal);
 		i++;
 	}
 	pthread_mutex_lock(&p_arg->m_death);
@@ -60,10 +64,9 @@ int	timestamp(t_arg *p_arg)
 	return (timestamp);
 }
 
-void	m_printf(const char *s, t_arg *p_arg, int id)
+void	m_printf(char *s, t_arg *p_arg, int id)
 {
-	if (pthread_mutex_lock(&p_arg->write) != 0)
-		return ;
+	pthread_mutex_lock(&p_arg->write);
 	if (p_arg->death == ALIVE)
 		printf("[%d] Philo %d %s\n", timestamp(p_arg), id, s);
 	pthread_mutex_unlock(&p_arg->write);

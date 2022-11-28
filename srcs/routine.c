@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 07:55:14 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 08:05:21 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:03:50 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,15 @@ void	*check_death(void *v_arg)
 	{
 		if (check_philo_died(p_arg) == 1)
 			return (NULL);
-		usleep(1000);
 		pthread_mutex_lock(&p_arg->meal);
 		if (p_arg->nb_eat != -1)
+		{
+			pthread_mutex_unlock(&p_arg->meal);
 			if (check_eat(p_arg) == 1)
 				return (NULL);
+		}
 		pthread_mutex_unlock(&p_arg->meal);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -62,7 +65,7 @@ void	*routine(void *v_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)v_philo;
-	while (1)
+	while (ft_check_death(philo->p_arg) == 0)
 	{
 		if (ft_check_death(philo->p_arg) == 1)
 			return (NULL);

@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:51:54 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 19:01:29 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/28 20:54:10 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	philo_eat(t_philo *philo)
 	usleep(philo->time_eat * 1000);
 	pthread_mutex_unlock(&philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
+	philo->first_lock = UNLOCKED;
+	philo->second_lock = UNLOCKED;
 	return (0);
 }
 
@@ -47,20 +49,24 @@ int	get_fork(t_philo *philo)
 		return (1);
 	if (philo->id % 2 == 0)
 	{
-		if (pthread_mutex_lock(&philo->r_fork) != 0)
-			return (1);
+		pthread_mutex_lock(&philo->r_fork);
+		philo->first_lock = LOCKED;
 		m_printf("has taken a fork.", philo->p_arg, philo->id);
-		if (pthread_mutex_lock(philo->l_fork) != 0)
+		if (ft_check_death(philo->p_arg) == 1)
 			return (1);
+		pthread_mutex_lock(philo->l_fork);
+		philo->second_lock = LOCKED;
 		m_printf("has taken a fork.", philo->p_arg, philo->id);
 	}
 	if (philo->id % 2 == 1)
 	{
-		if (pthread_mutex_lock(philo->l_fork) != 0)
-			return (1);
+		pthread_mutex_lock(philo->l_fork);
+		philo->second_lock = LOCKED;
 		m_printf("has taken a fork.", philo->p_arg, philo->id);
-		if (pthread_mutex_lock(&philo->r_fork) != 0)
+		if (ft_check_death(philo->p_arg) == 1)
 			return (1);
+		pthread_mutex_lock(&philo->r_fork);
+		philo->first_lock = LOCKED;
 		m_printf("has taken a fork.", philo->p_arg, philo->id);
 	}
 	return (0);
