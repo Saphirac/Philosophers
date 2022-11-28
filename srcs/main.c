@@ -6,27 +6,16 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 19:06:35 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 08:16:11 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_arg	*set_params(char **av, t_arg *p_arg)
+void	set_params_philo(char **av, t_arg *p_arg)
 {
-	int		i;
-
-	p_arg->nb_philo = ft_atoi(av[1]);
-	p_arg->time_die = ft_atoi(av[2]);
-	if (av[5])
-		p_arg->nb_eat = ft_atoi(av[5]);
-	else
-		p_arg->nb_eat = -1;
-	p_arg->start_time = time_in_mill();
-	p_arg->death = ALIVE;
-	p_arg->philo = malloc(sizeof(t_philo) * p_arg->nb_philo);
-	if (!p_arg->philo)
-		return 0;
+	int	i;
+	
 	i = -1;
 	while (++i < p_arg->nb_philo)
 	{
@@ -37,6 +26,22 @@ t_arg	*set_params(char **av, t_arg *p_arg)
 		p_arg->philo[i].p_arg = p_arg;
 		p_arg->philo[i].nb_eat = 0;
 	}
+}
+
+t_arg	*set_params(char **av, t_arg *p_arg)
+{
+	p_arg->nb_philo = ft_atoi(av[1]);
+	p_arg->time_die = ft_atoi(av[2]);
+	if (av[5])
+		p_arg->nb_eat = ft_atoi(av[5]);
+	else
+		p_arg->nb_eat = -1;
+	p_arg->start_time = time_in_mill();
+	p_arg->death = ALIVE;
+	p_arg->philo = malloc(sizeof(t_philo) * p_arg->nb_philo);
+	if (!p_arg->philo)
+		return (0);
+	set_params_philo(av, p_arg);
 	return (p_arg);
 }
 

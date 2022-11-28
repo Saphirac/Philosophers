@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 19:25:43 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 18:59:01 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 08:14:30 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	check_eat(t_arg *p_arg)
 	i = 0;
 	while (i < p_arg->nb_philo)
 	{
-		pthread_mutex_lock(&p_arg->meal);
+		//pthread_mutex_lock(&p_arg->meal);
 		if (p_arg->philo[i].nb_eat < p_arg->nb_eat)
 			return (0);
-		pthread_mutex_unlock(&p_arg->meal);
+		//pthread_mutex_unlock(&p_arg->meal);
 		i++;
 	}
 	pthread_mutex_lock(&p_arg->m_death);
@@ -46,7 +46,7 @@ int	check_eat(t_arg *p_arg)
 	return (1);
 }
 
-int ft_return(char *str, int ret)
+int	ft_return(char *str, int ret)
 {
 	printf("%s\n", str);
 	return (ret);

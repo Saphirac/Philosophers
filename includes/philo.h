@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 19:01:12 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/26 08:05:55 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ void	m_printf(const char *s, t_arg *p_arg, int id);
 int		ft_check_death(t_arg *p_arg);
 int		check_eat(t_arg *p_arg);
 void	destroy_mutex(t_arg *p_arg);
-
+void	*routine(void *v_philo);
 
 #endif
