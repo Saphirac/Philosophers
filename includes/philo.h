@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/28 20:57:55 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/29 21:04:50 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 # define ALIVE 0
 # define DEAD 1
-# define LOCKED 1
-# define UNLOCKED 0
+// # define LOCKED 1
+// # define UNLOCKED 0
 
 typedef struct s_philo	t_philo;
 
@@ -47,8 +47,6 @@ typedef struct s_philo
 	pthread_t		th_philo;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	*l_fork;
-	int				first_lock;
-	int				second_lock;
 	int				last_meal;
 	int				id;
 	int				time_sleep;
