@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 17:37:21 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/28 20:06:24 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/30 18:38:21 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	create_threads(t_arg *p_arg)
 	while (++i < p_arg->nb_philo)
 		if (pthread_join(p_arg->philo[i].th_philo, NULL) != 0)
 			return (1);
+	destroy_mutex(p_arg);
+	free(p_arg->philo);
 	return (0);
 }
 
@@ -56,4 +58,19 @@ int	create_mutex(t_arg *p_arg)
 	if (pthread_mutex_init((&p_arg->meal), NULL) != 0)
 		return (ft_return("Mutex init failed\n", 1));
 	return (0);
+}
+
+void	destroy_mutex(t_arg *p_arg)
+{
+	int	i;
+
+	i = 0;
+	while (i < p_arg->nb_philo)
+	{
+		pthread_mutex_destroy(&p_arg->philo[i].r_fork);
+		i++;
+	}
+	pthread_mutex_destroy(&p_arg->m_death);
+	pthread_mutex_destroy(&p_arg->write);
+	pthread_mutex_destroy(&p_arg->meal);
 }

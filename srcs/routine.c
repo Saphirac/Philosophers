@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 07:55:14 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/29 21:25:47 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/30 18:59:49 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_philo_died(t_arg *p_arg)
 			p_arg->death = DEAD;
 			pthread_mutex_unlock(&p_arg->m_death);
 			usleep(500);
+			drop_all_forks(p_arg);
 			return (1);
 		}
 		pthread_mutex_unlock(&p_arg->meal);
@@ -68,8 +69,10 @@ void	*routine(void *v_philo)
 	{
 		if (ft_check_death(philo->p_arg) == 1)
 			return (NULL);
-		if (get_fork(philo) == 0)
-			philo_eat(philo);
+		get_fork(philo);
+		if (ft_check_death(philo->p_arg) == 1)
+			return (NULL);
+		philo_eat(philo);
 		if (ft_check_death(philo->p_arg) == 1)
 			return (NULL);
 		philo_sleep(philo);

@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:28 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/29 21:05:02 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/11/30 18:51:40 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	set_params_philo(char **av, t_arg *p_arg)
 		p_arg->philo[i].last_meal = 0;
 		p_arg->philo[i].p_arg = p_arg;
 		p_arg->philo[i].nb_eat = 0;
-		// p_arg->philo[i].first_lock = UNLOCKED;
-		// p_arg->philo[i].second_lock = UNLOCKED;
+		p_arg->philo[i].right_lock = UNLOCKED;
+		p_arg->philo[i].left_lock = UNLOCKED;
 	}
 }
 
@@ -59,7 +59,5 @@ int	main(int ac, char **av)
 	philo = *set_params(av, &p_arg);
 	if (create_threads(&philo) == 1)
 		return (ft_return("Problem with creating threads\n", 1));
-	destroy_mutex(&philo);
-	free(philo.philo);
 	return (0);
 }
