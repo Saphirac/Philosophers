@@ -6,34 +6,24 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 19:25:43 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/30 19:07:57 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/12/02 05:56:15 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_eat(t_arg *p_arg)
+int	ft_usleep(int time, t_arg *p_arg)
 {
-	int	i;
+	int	start;
 
-	i = 0;
-	while (i < p_arg->nb_philo)
+	start = timestamp(p_arg);
+	while (timestamp(p_arg) - start < time)
 	{
-		pthread_mutex_lock(&p_arg->meal);
-		if (p_arg->philo[i].nb_eat < p_arg->nb_eat)
-			return (0);
-		pthread_mutex_unlock(&p_arg->meal);
-		i++;
+		if (p_arg->death == DEAD)
+			return (1);
+		usleep(100);
 	}
-	pthread_mutex_lock(&p_arg->m_death);
-	p_arg->death = DEAD;
-	pthread_mutex_unlock(&p_arg->m_death);
-	return (1);
-}
-
-int	ft_usleep(int time)
-{
-	
+	return (0);
 }
 
 int	timestamp(t_arg *p_arg)
@@ -61,9 +51,9 @@ void	drop_all_forks(t_arg *p_arg)
 	i = 0;
 	while (i < p_arg->nb_philo)
 	{
-		if (p_arg->philo[i].right_lock == LOCKED)
+		if (pthread_mutex_lock(&p_arg->philo[i].r_fork) != 0)
 			pthread_mutex_unlock(&p_arg->philo[i].r_fork);
-		if (p_arg->philo[i].left_lock == LOCKED)
+		if (pthread_mutex_lock(p_arg->philo[i].l_fork) != 0)
 			pthread_mutex_unlock(p_arg->philo[i].l_fork);
 		i++;
 	}

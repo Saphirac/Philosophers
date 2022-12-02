@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/26 18:42:21 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/12/02 06:17:46 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,6 @@ int	is_digit(char *stack)
 	return (1);
 }
 
-int	time_in_mill(void)
-{
-	struct timeval	tv;
-	int				mill;
-
-	gettimeofday(&tv, NULL);
-	mill = tv.tv_sec * 1000 + (tv.tv_usec) / 1000;
-	return (mill);
-}
-
-int	ft_check_death(t_arg *p_arg)
-{
-	pthread_mutex_lock(&p_arg->m_death);
-	if (p_arg->death == DEAD)
-		return (1);
-	pthread_mutex_unlock(&p_arg->m_death);
-	return (0);
-}
 
 int	check_arg(char **av)
 {
@@ -91,4 +73,27 @@ int	check_arg(char **av)
 		}
 	}
 	return (1);
+}
+
+int	time_in_mill(void)
+{
+	struct timeval	tv;
+	int				mill;
+
+	gettimeofday(&tv, NULL);
+	mill = tv.tv_sec * 1000 + (tv.tv_usec) / 1000;
+	return (mill);
+}
+
+int	ft_check_death(t_arg *p_arg, int id)
+{
+	(void)id;
+	pthread_mutex_lock(&p_arg->m_death);
+	if (p_arg->death == DEAD)
+	{
+		pthread_mutex_unlock(&p_arg->m_death);
+		return (1);
+	}
+	pthread_mutex_unlock(&p_arg->m_death);
+	return (0);
 }

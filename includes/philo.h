@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 16:59:48 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/11/30 18:58:58 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/12/02 06:05:44 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_philo
 long	ft_atoi(char *nptr);
 int		is_digit(char *stack);
 int		time_in_mill(void);
-int		ft_return(char *str, int ret);
 int		check_arg(char **av);
 int		create_threads(t_arg *p_arg);
 int		create_mutex(t_arg *p_arg);
@@ -72,10 +71,11 @@ int		timestamp(t_arg *p_arg);
 void	*routine(void *philo);
 int		philo_eat(t_philo *philo);
 void	m_printf(char *s, t_arg *p_arg, int id);
-int		ft_check_death(t_arg *p_arg);
+int		ft_check_death(t_arg *p_arg, int id);
 int		check_eat(t_arg *p_arg);
 void	destroy_mutex(t_arg *p_arg);
 void	*routine(void *v_philo);
 void	drop_all_forks(t_arg *p_arg);
+int		ft_usleep(int time, t_arg *p_arg);
 
 #endif

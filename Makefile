@@ -28,7 +28,7 @@ INC = ./includes
 FLAGS = -Wall -Wextra -Werror -pthread
 
 .c.o:
-	${CC} ${FLAGS} -I${INC} -c $< -o ${<:.c=.o}
+	${CC} -g3 ${FLAGS} -I${INC} -c $< -o ${<:.c=.o}
 
 ${NAME}:    ${OBJS} ${OBJSMAIN}
 	    ${CC} ${FLAGS} ${OBJS} ${OBJSMAIN} -o ${NAME}
