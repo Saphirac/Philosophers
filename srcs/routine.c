@@ -6,74 +6,44 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 07:55:14 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/12/02 06:27:08 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/12/03 02:00:05 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_eat(t_arg *p_arg)
+int	auto_check_death(t_philo *philo)
 {
-	int	i;
-
-	i = 0;
-	while (i < p_arg->nb_philo)
+	if (ft_check_death(philo->p_arg) != 0)
 	{
-		pthread_mutex_lock(&p_arg->meal);
-		if (p_arg->philo[i].nb_eat < p_arg->nb_eat)
-			return (0);
-		pthread_mutex_unlock(&p_arg->meal);
-		i++;
+		philo->philo_stop = 1;
+		return (1);
 	}
-	pthread_mutex_lock(&p_arg->m_death);
-	p_arg->death = DEAD;
-	pthread_mutex_unlock(&p_arg->m_death);
-	return (1);
-}
-
-int	check_philo_died(t_arg *p_arg)
-{
-	int	i;
-
-	i = 0;
-	while (i < p_arg->nb_philo)
+	if (timestamp(philo->p_arg) - philo->last_meal > philo->p_arg->time_die)
 	{
-		pthread_mutex_lock(&p_arg->meal);
-		if ((timestamp(p_arg) - p_arg->philo[i].last_meal)
-			> p_arg->time_die)
+		if (ft_check_death(philo->p_arg) == 0)
 		{
-			pthread_mutex_unlock(&p_arg->meal);
-			m_printf("died", p_arg, (i + 1));
-			pthread_mutex_lock(&p_arg->m_death);
-			p_arg->death = i + 1;
-			pthread_mutex_unlock(&p_arg->m_death);
-			// drop_all_forks(p_arg);
-			usleep(500);
-			//destroy_mutex(p_arg);
-			return (1);
+			m_printf("died.\n", philo->p_arg, philo->id);
+			pthread_mutex_lock(&philo->p_arg->m_death);
+			philo->p_arg->death = philo->id;
+			pthread_mutex_unlock(&philo->p_arg->m_death);
 		}
-		pthread_mutex_unlock(&p_arg->meal);
-		i++;
+		philo->philo_stop = 1;
+		return (1);
+	}
+	if (philo->eat_done == philo->p_arg->nb_eat)
+	{
+		philo->philo_stop = 1;
+		return (1);
 	}
 	return (0);
 }
 
-void	*check_death(void *v_arg)
+void	one_philo(t_philo *philo)
 {
-	t_arg	*p_arg;
-
-	p_arg = (t_arg *)v_arg;
-	while (1)
-	{
-		if (check_philo_died(p_arg) == 1)
-			return (NULL);
-		if (p_arg->nb_eat != -1)
-		{
-			if (check_eat(p_arg) == 1)
-				return (NULL);
-		}
-		usleep(200);
-	}
+	m_printf("has taken a fork.\n", philo->p_arg, philo->id);
+	ft_usleep(philo->p_arg->time_die, philo);
+	m_printf("died.\n", philo->p_arg, philo->id);
 }
 
 void	*routine(void *v_philo)
@@ -81,21 +51,24 @@ void	*routine(void *v_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)v_philo;
-	while (ft_check_death(philo->p_arg, philo->id) == ALIVE)
+	if (philo->p_arg->nb_philo == 1)
 	{
-		if (ft_check_death(philo->p_arg, philo->id) != ALIVE)
+		one_philo(philo);
+		return (NULL);
+	}
+	while (auto_check_death(philo) == 0 || philo->philo_stop == 0)
+	{
+		if (auto_check_death(philo) != 0 || philo->philo_stop != 0)
 			return (NULL);
 		get_fork(philo);
-		// if (ft_check_death(philo->p_arg, philo->id) != ALIVE)
-		// 	return (NULL);
 		philo_eat(philo);
-		if (ft_check_death(philo->p_arg, philo->id) != ALIVE)
+		if (auto_check_death(philo) != 0 || philo->philo_stop != 0)
 			return (NULL);
 		philo_sleep(philo);
-		if (ft_check_death(philo->p_arg, philo->id) != ALIVE)
+		if (auto_check_death(philo) != 0 || philo->philo_stop != 0)
 			return (NULL);
 		philo_think(philo);
-		if (ft_check_death(philo->p_arg, philo->id) != ALIVE)
+		if (auto_check_death(philo) != 0 || philo->philo_stop != 0)
 			return (NULL);
 	}
 	return (NULL);

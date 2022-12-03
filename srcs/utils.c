@@ -6,7 +6,7 @@
 /*   By: mcourtoi <mcourtoi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 17:08:46 by mcourtoi          #+#    #+#             */
-/*   Updated: 2022/12/02 06:17:46 by mcourtoi         ###   ########.fr       */
+/*   Updated: 2022/12/03 01:59:22 by mcourtoi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	is_digit(char *stack)
 	return (1);
 }
 
-
 int	check_arg(char **av)
 {
 	int	i;
@@ -63,14 +62,19 @@ int	check_arg(char **av)
 	{
 		if (is_digit(av[i]) == 0)
 		{
-			printf("Error : please input valid arguments\n");
+			printf("Error : Please input valid arguments.\n");
 			return (0);
 		}
 		if (ft_atoi(av[i]) < 0)
 		{
-			printf("Error : please only input positive arguments\n");
+			printf("Error : Please only input positive arguments.\n");
 			return (0);
 		}
+	}
+	if (ft_atoi (av[1]) == 0)
+	{
+		printf("Error : Please input at least one philosopher.\n");
+		return (0);
 	}
 	return (1);
 }
@@ -85,14 +89,13 @@ int	time_in_mill(void)
 	return (mill);
 }
 
-int	ft_check_death(t_arg *p_arg, int id)
+int	ft_check_death(t_arg *p_arg)
 {
-	(void)id;
 	pthread_mutex_lock(&p_arg->m_death);
-	if (p_arg->death == DEAD)
+	if (p_arg->death != 0)
 	{
 		pthread_mutex_unlock(&p_arg->m_death);
-		return (1);
+		return (p_arg->death);
 	}
 	pthread_mutex_unlock(&p_arg->m_death);
 	return (0);
